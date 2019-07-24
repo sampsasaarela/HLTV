@@ -19,6 +19,7 @@
         "emitDecoratorMetadata": true
     },
     "exclude": [
-        "__tests__"
+        "__tests__",
+        "lib"
     ]
 }
