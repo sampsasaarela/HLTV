@@ -89,7 +89,7 @@ export const getMatch = (config: HLTVConfig) => async ({
   }
 
   let result: string | undefined = undefined;
-  if (winnerTeam && team1 && team2) {
+  if (team1 && team2) {
     team1.scores = Number($('.team1-gradient')
       .children()
       .last()
