@@ -328,16 +328,15 @@ export const getMatch = (config: HLTVConfig) => async ({
     }))
   }
 
-  let statsId: number|undefined = undefined;
-  const detailedStatsEl = $('.stats-detailed-stats');
-  if (detailedStatsEl.length) {
-    statsId = Number(
-      detailedStatsEl
-        .children()
-        .attr('href')
-        .trim()
-        .split('/')[3]
-    );
+  let statsId: number | undefined
+
+  if ($('.stats-detailed-stats a').length) {
+    const matchStatsHref = $('.stats-detailed-stats a').attr('href')
+
+    statsId =
+      matchStatsHref.split('/')[3] !== 'mapstatsid'
+        ? parseInt(matchStatsHref.split('/')[3], 10)
+        : parseInt(matchStatsHref.split('/')[4], 10)
   }
 
   return {
