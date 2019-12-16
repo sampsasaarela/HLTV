@@ -15,10 +15,10 @@ export const getPlayerStats = (config: HLTVConfig) => async ({
   rankingFilter
 }: {
   id: number
-  startDate?: string
-  endDate?: string
-  matchType?: MatchType
-  rankingFilter?: RankingFilter
+  startDate: string
+  endDate: string
+  matchType: MatchType
+  rankingFilter: RankingFilter
 }): Promise<FullPlayerStats> => {
   const query = stringify({
     startDate,
