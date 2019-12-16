@@ -37,9 +37,9 @@ export const getMatchesStats = (config: HLTVConfig) => async ({
     matches = matches.concat(
       toArray($('.matches-table tbody tr')).map(matchEl => {
         const id = Number(
-          matchEl
+          (matchEl
             .find('.date-col a')
-            .attr('href')
+            .attr('href') || '')
             .split('/')[4]
         )
         const date = Number(matchEl.find('.time').attr('data-unix'))
@@ -47,10 +47,10 @@ export const getMatchesStats = (config: HLTVConfig) => async ({
 
         const team1: Team = {
           id: Number(
-            matchEl
+            (matchEl
               .find('.team-col a')
               .first()
-              .attr('href')
+              .attr('href') || '')
               .split('/')[3]
           ),
           name: matchEl
@@ -61,10 +61,10 @@ export const getMatchesStats = (config: HLTVConfig) => async ({
 
         const team2: Team = {
           id: Number(
-            matchEl
+            (matchEl
               .find('.team-col a')
               .last()
-              .attr('href')
+              .attr('href') || '')
               .split('/')[3]
           ),
           name: matchEl
@@ -75,9 +75,9 @@ export const getMatchesStats = (config: HLTVConfig) => async ({
 
         const event: Event = {
           id: Number(
-            matchEl
+            (matchEl
               .find('.event-col a')
-              .attr('href')
+              .attr('href') || '')
               .split('event=')[1]
               .split('&')[0]
           ),

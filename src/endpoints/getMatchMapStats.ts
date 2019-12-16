@@ -62,8 +62,8 @@ export const getMatchMapStats = (config: HLTVConfig) => async ({
   ])
 
   const matchPageID = Number(
-    m$('.match-page-link')
-      .attr('href')
+    (m$('.match-page-link')
+      .attr('href') || '')
       .split('/')[2]
   )
   const matchScore = [Number(m$('.team-left .bold').text()), Number(m$('.team-right .bold').text())]
@@ -86,21 +86,21 @@ export const getMatchMapStats = (config: HLTVConfig) => async ({
 
   const team1: TeamStat = {
     id: Number(popSlashSource(m$('.team-left .team-logo'))),
-    name: m$('.team-left .team-logo').attr('title'),
+    name: m$('.team-left .team-logo').attr('title') || '',
     score: matchScore[0]
   }
 
   const team2: TeamStat = {
     id: Number(popSlashSource(m$('.team-right .team-logo'))),
-    name: m$('.team-right .team-logo').attr('title'),
+    name: m$('.team-right .team-logo').attr('title') || '',
     score: matchScore[1]
   }
 
   const event: Event = {
     id: Number(
-      m$('.match-info-box .text-ellipsis')
+      (m$('.match-info-box .text-ellipsis')
         .first()
-        .attr('href')
+        .attr('href') || '')
         .split('event=')[1]
     ),
     name: m$('.match-info-box .text-ellipsis')
@@ -144,14 +144,14 @@ export const getMatchMapStats = (config: HLTVConfig) => async ({
     const graphData = playerEl.find('.graph.small').attr('data-fusionchart-config')
     const data = {
       id: Number(
-        playerEl
+        (playerEl
           .find('.headline span a')
-          .attr('href')
+          .attr('href') || '')
           .split('/')[2]
       ),
-      killsPerRound: Number(graphData.split('Kills per round: ')[1].split('"')[0]),
-      deathsPerRound: Number(graphData.split('Deaths / round: ')[1].split('"')[0]),
-      impact: Number(graphData.split('Impact rating: ')[1].split('"')[0])
+      killsPerRound: Number((graphData || '').split('Kills per round: ')[1].split('"')[0]),
+      deathsPerRound: Number((graphData || '').split('Deaths / round: ')[1].split('"')[0]),
+      impact: Number((graphData || '').split('Impact rating: ')[1].split('"')[0])
     }
 
     map[data.id] = data
@@ -161,9 +161,9 @@ export const getMatchMapStats = (config: HLTVConfig) => async ({
 
   const playerOverviewStats: PlayerStats[] = toArray(m$('.stats-table tbody tr')).map(rowEl => {
     const id = Number(
-      rowEl
+      (rowEl
         .find('.st-player a')
-        .attr('href')
+        .attr('href') || '')
         .split('/')[3]
     )
     const performanceStats = playerPerformanceStats[id]

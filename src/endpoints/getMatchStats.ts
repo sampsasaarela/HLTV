@@ -32,9 +32,9 @@ export const getMatchStats = (config: HLTVConfig) => async ({
   const getPlayerTopStat = ($: CheerioStatic, index: number): PlayerStat => {
     return {
       id: Number(
-        $($('.most-x-box').get(index))
+        ($($('.most-x-box').get(index))
           .find('.name > a')
-          .attr('href')
+          .attr('href') || '')
           .split('/')[3]
       ),
       name: $($('.most-x-box').get(index))
@@ -51,8 +51,8 @@ export const getMatchStats = (config: HLTVConfig) => async ({
   const m$ = await fetchPage(`${config.hltvUrl}/stats/matches/${id}/-`, config.loadPage)
 
   const matchPageID = Number(
-    m$('.match-page-link')
-      .attr('href')
+    (m$('.match-page-link')
+      .attr('href') || '')
       .split('/')[2]
   )
   const matchScore = [Number(m$('.team-left .bold').text()), Number(m$('.team-right .bold').text())]
@@ -64,21 +64,21 @@ export const getMatchStats = (config: HLTVConfig) => async ({
 
   const team1: TeamStat = {
     id: Number(popSlashSource(m$('.team-left .team-logo'))),
-    name: m$('.team-left .team-logo').attr('title'),
+    name: m$('.team-left .team-logo').attr('title') || '',
     score: matchScore[0]
   }
 
   const team2: TeamStat = {
     id: Number(popSlashSource(m$('.team-right .team-logo'))),
-    name: m$('.team-right .team-logo').attr('title'),
+    name: m$('.team-right .team-logo').attr('title') || '',
     score: matchScore[1]
   }
 
   const event: Event = {
     id: Number(
-      m$('.match-info-box .text-ellipsis')
+      (m$('.match-info-box .text-ellipsis')
         .first()
-        .attr('href')
+        .attr('href') || '')
         .split('event=')[1]
     ),
     name: m$('.match-info-box .text-ellipsis')
@@ -108,9 +108,9 @@ export const getMatchStats = (config: HLTVConfig) => async ({
   const overview = { ...teamStats, ...mostX } as MatchStatsOverview
   const playerOverviewStats: PlayerStats[] = toArray(m$('.stats-table tbody tr')).map(rowEl => {
     const id = Number(
-      rowEl
+      (rowEl
         .find('.st-player a')
-        .attr('href')
+        .attr('href') || '')
         .split('/')[3]
     )
 

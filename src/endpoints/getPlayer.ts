@@ -52,11 +52,11 @@ export const getPlayer = (config: HLTVConfig) => async ({
 
   const country = isStandardPlayer
     ? {
-        name: $('.player-realname .flag').attr('alt'),
+        name: $('.player-realname .flag').attr('alt') || '',
         code: popSlashSource($('.player-realname .flag'))!.split('.')[0]
       }
     : {
-        name: $('.playerRealname .flag').attr('alt'),
+        name: $('.playerRealname .flag').attr('alt') || '',
         code: popSlashSource($('.playerRealname .flag'))!.split('.')[0]
       }
 
@@ -73,8 +73,8 @@ export const getPlayer = (config: HLTVConfig) => async ({
           .text()
           .trim(),
         id: Number(
-          $('.profile-player-stat-value a')
-            .attr('href')
+          ($('.profile-player-stat-value a')
+            .attr('href') || '')
             .split('/')[2]
         )
       }
@@ -90,7 +90,7 @@ export const getPlayer = (config: HLTVConfig) => async ({
     }
   }
 
-  const getMapStat = i =>
+  const getMapStat = (i: any) =>
     Number(
       $(
         $('.tab-content .two-col')
@@ -116,9 +116,9 @@ export const getPlayer = (config: HLTVConfig) => async ({
     event: {
       name: achEl.find('.tournament-name-cell a').text(),
       id: Number(
-        achEl
+        (achEl
           .find('.tournament-name-cell a')
-          .attr('href')
+          .attr('href') || '')
           .split('/')[2]
       )
     }

@@ -15,7 +15,7 @@ export const getTeam = (config: HLTVConfig) => async ({
   const name = t$('.profile-team-name').text()
   const logo = `${config.hltvStaticUrl}/images/team/logo/${id}`
   const coverImage = t$('.coverImage').attr('data-bg-image')
-  const location = t$('.team-country .flag').attr('alt')
+  const location = t$('.team-country .flag').attr('alt') || ''
   const facebook = t$('.facebook')
     .parent()
     .attr('href')
@@ -35,9 +35,9 @@ export const getTeam = (config: HLTVConfig) => async ({
     .map(playerEl => ({
       name: playerEl.find('.playerFlagName .text-ellipsis').text(),
       id: Number(
-        playerEl
+        (playerEl
           .find('.profileImage')
-          .attr('src')
+          .attr('src') || '')
           .split('/')
           .slice(-2, -1)
       )
@@ -54,11 +54,11 @@ export const getTeam = (config: HLTVConfig) => async ({
 
   const recentResults: Result[] = toArray(t$('.team-row')).map(matchEl => ({
     matchID: Number(
-      (matchEl.find('.matchpage-button').length
+      ((matchEl.find('.matchpage-button').length
         ? matchEl.find('.matchpage-button')
         : matchEl.find('.stats-button')
       )
-        .attr('href')
+        .attr('href') || '')
         .split('/')[2]
     ),
     enemyTeam: {
@@ -68,11 +68,11 @@ export const getTeam = (config: HLTVConfig) => async ({
     result: matchEl.find('.score-cell').text()
   }))
 
-  let rankingDevelopment
+  let rankingDevelopment: any
 
   try {
-    const rankings = JSON.parse(t$('.graph').attr('data-fusionchart-config'))
-    rankingDevelopment = rankings.dataSource.dataset[0].data.map(x => x.value).map(Number)
+    const rankings = JSON.parse(t$('.graph').attr('data-fusionchart-config') || '')
+    rankingDevelopment = rankings.dataSource.dataset[0].data.map((x: any) => x.value).map(Number)
   } catch {
     rankingDevelopment = []
   }
@@ -82,9 +82,9 @@ export const getTeam = (config: HLTVConfig) => async ({
     event: {
       name: achEl.find('.tournament-name-cell a').text(),
       id: Number(
-        achEl
+        (achEl
           .find('.tournament-name-cell a')
-          .attr('href')
+          .attr('href') || '')
           .split('/')[2]
       )
     }
@@ -93,14 +93,14 @@ export const getTeam = (config: HLTVConfig) => async ({
   const events = toArray(t$('#ongoingEvents a.ongoing-event'))
     .map(eventEl => ({
       name: eventEl.find('.eventbox-eventname').text(),
-      id: Number(eventEl.attr('href').split('/')[2])
+      id: Number((eventEl.attr('href') || '').split('/')[2])
     }))
     .concat(
       toArray(e$('.image-and-label[href*="event"]')).map(eventEl => ({
-        name: eventEl.attr('title'),
+        name: eventEl.attr('title') || '',
         id: Number(
-          eventEl
-            .attr('href')
+          (eventEl
+            .attr('href') || '')
             .split('=')
             .pop()
         )

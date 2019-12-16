@@ -27,10 +27,10 @@ export const getPlayerRanking = (config: HLTVConfig) => async ({
 
   const players = toArray($('.player-ratings-table tbody tr')).map(matchEl => {
     var id = Number(
-      matchEl
+      (matchEl
         .find('.playerCol a')
         .first()
-        .attr('href')
+        .attr('href') || '')
         .split('/')[3]
     )
     var name = matchEl.find('.playerCol').text()

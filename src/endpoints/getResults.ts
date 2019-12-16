@@ -33,7 +33,7 @@ export const getResults = (config: HLTVConfig) => async ({
     matches = matches.concat(
       toArray($('.results-holder > .results-all > .results-sublist .result-con .a-reset')).map(
         matchEl => {
-          const id = Number(matchEl.attr('href').split('/')[2])
+          const id = Number((matchEl.attr('href') || '').split('/')[2])
           const stars = matchEl.find('.stars i').length
 
           const team1: Team = {
@@ -68,7 +68,7 @@ export const getResults = (config: HLTVConfig) => async ({
               : $('.eventname').text()
 
           const event: Event = {
-            name: nameOfEvent,
+            name: nameOfEvent || '',
             id: Number(idOfEvent)
           }
 

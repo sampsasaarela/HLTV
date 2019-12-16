@@ -14,7 +14,7 @@ export const getTeamStats = (config: HLTVConfig) => async ({
   const mp$ = await fetchPage(`${config.hltvUrl}/stats/teams/maps/${id}/-`, config.loadPage)
 
   const overviewStats = $('.standard-box .large-strong')
-  const getOverviewStatByIndex = i => Number(overviewStats.eq(i).text())
+  const getOverviewStatByIndex = (i: any) => Number(overviewStats.eq(i).text())
   const [wins, draws, losses] = overviewStats
     .eq(1)
     .text()
@@ -32,14 +32,14 @@ export const getTeamStats = (config: HLTVConfig) => async ({
     losses
   }
 
-  const getContainerByText = text =>
+  const getContainerByText = (text: any) =>
     $('.standard-headline')
       .filter((_, el) => $(el).text() === text)
       .parent()
       .next()
-  const getPlayersByContainer = container =>
+  const getPlayersByContainer = (container: any) =>
     toArray(container.find('.image-and-label')).map(playerEl => ({
-      id: Number(playerEl.attr('href').split('/')[3]),
+      id: Number((playerEl.attr('href') || '').split('/')[3]),
       name: playerEl.find('.text-ellipsis').text()
     }))
 
@@ -51,14 +51,14 @@ export const getTeamStats = (config: HLTVConfig) => async ({
     dateApproximate: getTimestamp(matchEl.find('.time a').text()),
     event: {
       id: Number(popSlashSource(matchEl.find('.image-and-label img'))!.split('.')[0]),
-      name: matchEl.find('.image-and-label img').attr('title')
+      name: matchEl.find('.image-and-label img').attr('title') || ''
     },
     enemyTeam: {
       id: Number(
-        matchEl
+        (matchEl
           .find('img.flag')
           .parent()
-          .attr('href')
+          .attr('href') || '')
           .split('/')[3]
       ),
       name: matchEl
@@ -70,9 +70,9 @@ export const getTeamStats = (config: HLTVConfig) => async ({
     },
     map: getMapSlug(matchEl.find('.statsMapPlayed span').text()),
     mapStatsId: Number(
-      matchEl
+      (matchEl
         .find('.time a')
-        .attr('href')
+        .attr('href') || '')
         .split('/')[4]
     ),
     result: matchEl.find('.statsDetail').text()
@@ -82,20 +82,20 @@ export const getTeamStats = (config: HLTVConfig) => async ({
     place: eventEl.find('.statsCenterText').text(),
     event: {
       id: Number(
-        eventEl
+        (eventEl
           .find('.image-and-label')
           .first()
-          .attr('href')
+          .attr('href') || '')
           .split('=')[1]
       ),
       name: eventEl
         .find('.image-and-label')
         .first()
-        .attr('title')
+        .attr('title') || ''
     }
   }))
 
-  const getMapStat = (mapEl, i) =>
+  const getMapStat = (mapEl: any, i: any) =>
     mapEl
       .find('.stats-row')
       .eq(i)

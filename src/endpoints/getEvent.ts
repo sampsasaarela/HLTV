@@ -25,12 +25,12 @@ export const getEvent = (config: HLTVConfig) => async ({
     ) || undefined
   const prizePool = $('td.prizepool').text()
   const location = {
-    name: $('img.flag').attr('title'),
+    name: $('img.flag').attr('title') || '',
     code: popSlashSource($('img.flag'))!.split('.')[0]
   }
 
   const teams = toArray($('.team-box')).map(teamEl => ({
-    name: teamEl.find('.logo').attr('title'),
+    name: teamEl.find('.logo').attr('title') || '',
     id: Number(popSlashSource(teamEl.find('.logo'))),
     reasonForParticipation:
       teamEl
@@ -49,9 +49,9 @@ export const getEvent = (config: HLTVConfig) => async ({
   const relatedEvents = toArray($('.related-event')).map(eventEl => ({
     name: eventEl.find('.event-name').text(),
     id: Number(
-      eventEl
+      (eventEl
         .find('a')
-        .attr('href')
+        .attr('href') || '')
         .split('/')[2]
     )
   }))
@@ -82,9 +82,9 @@ export const getEvent = (config: HLTVConfig) => async ({
           ? {
               name: placementEl.find('.team a').text(),
               id: Number(
-                placementEl
+                (placementEl
                   .find('.team a')
-                  .attr('href')
+                  .attr('href') || '')
                   .split('/')[2]
               )
             }

@@ -117,10 +117,10 @@ export const getMatch = (config: HLTVConfig) => async ({
   const event: Event = {
     name: $('.timeAndEvent .event').text(),
     id: Number(
-      $('.timeAndEvent .event')
+      ($('.timeAndEvent .event')
         .children()
         .first()
-        .attr('href')
+        .attr('href') || '')
         .split('/')[2]
     )
   }
@@ -201,9 +201,9 @@ export const getMatch = (config: HLTVConfig) => async ({
     result: mapEl.find('.results span').text(),
     statsId: mapEl.find('.results-stats').length
       ? Number(
-          mapEl
+          (mapEl
             .find('.results-stats')
-            .attr('href')
+            .attr('href') || '')
             .split('/')[4]
         )
       : undefined
@@ -234,12 +234,12 @@ export const getMatch = (config: HLTVConfig) => async ({
     .filter(hasChild('.flagAlign'))
     .map(streamEl => ({
       name: streamEl.find('.flagAlign').text(),
-      link: streamEl.attr('data-stream-embed'),
+      link: streamEl.attr('data-stream-embed') || '',
       viewers: Number(streamEl.find('.viewers').text())
     }))
 
   if ($('.stream-box.hltv-live').length !== 0) {
-    streams.push({ name: 'HLTV Live', link: $('.stream-box.hltv-live a').attr('href'), viewers: 0 })
+    streams.push({ name: 'HLTV Live', link: $('.stream-box.hltv-live a').attr('href') || '', viewers: 0 })
   }
 
   if ($('.stream-box.gotv').length !== 0) {
@@ -258,10 +258,10 @@ export const getMatch = (config: HLTVConfig) => async ({
       const gotvEl = demoEl.find('.left-right-padding')
 
       if (gotvEl.length !== 0) {
-        return { name: gotvEl.text(), link: gotvEl.attr('href') }
+        return { name: gotvEl.text(), link: gotvEl.attr('href') || '' }
       }
 
-      return { name: demoEl.find('.spoiler').text(), link: demoEl.attr('data-stream-embed') }
+      return { name: demoEl.find('.spoiler').text(), link: demoEl.attr('data-stream-embed') || '' }
     }
   )
 
@@ -294,10 +294,10 @@ export const getMatch = (config: HLTVConfig) => async ({
             .next()
             .text(),
           id: Number(
-            matchEl
+            (matchEl
               .find('.winner .flag')
               .next()
-              .attr('href')
+              .attr('href') || '')
               .split('/')[2]
           )
         }
@@ -306,9 +306,9 @@ export const getMatch = (config: HLTVConfig) => async ({
       const event = {
         name: matchEl.find('.event a').text(),
         id: Number(
-          matchEl
+          (matchEl
             .find('.event a')
-            .attr('href')
+            .attr('href') || '')
             .split('/')[2]
         )
       }
@@ -323,7 +323,7 @@ export const getMatch = (config: HLTVConfig) => async ({
 
   if (team1 && team2) {
     highlights = toArray($('.highlight')).map(highlightEl => ({
-      link: highlightEl.attr('data-highlight-embed'),
+      link: highlightEl.attr('data-highlight-embed') || '',
       title: highlightEl.text()
     }))
   }
@@ -331,7 +331,7 @@ export const getMatch = (config: HLTVConfig) => async ({
   let statsId: number | undefined
 
   if ($('.stats-detailed-stats a').length) {
-    const matchStatsHref = $('.stats-detailed-stats a').attr('href')
+    const matchStatsHref = $('.stats-detailed-stats a').attr('href') || ''
 
     statsId =
       matchStatsHref.split('/')[3] !== 'mapstatsid'

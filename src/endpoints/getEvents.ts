@@ -50,8 +50,8 @@ export const getEvents = (config: HLTVConfig) => async ({
 }
 
 const parseEvents = (eventsToParse: Cheerio[], size?: EventSize): SimpleEvent[] => {
-  let dateSelector,
-    nameSelector,
+  let dateSelector: any,
+    nameSelector: any,
     locationSelector = ''
 
   if (size == EventSize.Small) {
@@ -110,7 +110,7 @@ const parseEvents = (eventsToParse: Cheerio[], size?: EventSize): SimpleEvent[] 
       typeName = eventName.toLowerCase().includes('major') ? EventType.Major : undefined
 
     return {
-      id: Number(eventEl.attr('href').split('/')[2]),
+      id: Number((eventEl.attr('href') || '').split('/')[2]),
       name: eventName,
       dateStart: dateStart ? Number(dateStart) : undefined,
       dateEnd: dateEnd ? Number(dateEnd) : undefined,
