@@ -198,7 +198,12 @@ export const getMatch = (config: HLTVConfig) => async ({
 
   const maps: MapResult[] = toArray($('.mapholder')).map(mapEl => ({
     name: getMapSlug(mapEl.find('.mapname').text()),
-    result: mapEl.find('.results span').text(),
+    result: mapEl.find('.results .results-left .results-team-score').length ?
+      mapEl.find('.results .results-left .results-team-score').text()
+        + ':'
+        + mapEl.find('.results .results-right .results-team-score').text()
+        + mapEl.find('.results .results-center-half-score span').text()
+      : '',
     statsId: mapEl.find('.results-stats').length
       ? Number(
           (mapEl
