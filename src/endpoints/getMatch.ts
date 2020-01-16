@@ -160,12 +160,23 @@ export const getMatch = (config: HLTVConfig) => async ({
         oddTeam2 = percentageToDecimalOdd(oddTeam2)
       }
 
+      const provider = oddElement
+        .prop('class')
+        .split('geoprovider_')[1]
+        .split(' ')[0]
+        .trim();
+
+        let providerFromLogo: null|string = null;
+        const logos = oddElement.find('.compare-logo');
+        if (logos && logos.length && logos.attr('src')) {
+          providerFromLogo = (logos.attr('src') || '').split('/')
+            .reverse()[0]
+            .replace(/(.*)\.(.*)$/, '$1')
+            .replace(/[\-_](logo|day)$/, '');
+        }
+
       return {
-        provider: oddElement
-          .prop('class')
-          .split('geoprovider_')[1]
-          .split(' ')[0]
-          .trim(),
+        provider: providerFromLogo || provider,
         team1: oddTeam1,
         team2: oddTeam2
       }
