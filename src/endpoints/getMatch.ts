@@ -125,7 +125,7 @@ export const getMatch = (config: HLTVConfig) => async ({
     )
   }
 
-  const odds: OddResult[] = toArray($('.betting_provider:not(.hidden)'))
+  const odds: OddResult[] = toArray($('.compare.standard-box .table .provider:not(.hidden)'))
     .filter(hasNoChild('.noOdds'))
     .map(oddElement => {
       let convertOdds =
